@@ -21,22 +21,35 @@
             <button type="submit">Log In</button>
         </form>
     </div>
-    <script>
-        document.getElementById('loginForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            
-            // نمایش اطلاعات در کنسول
-            console.log("🎯 اطلاعات دریافت شده:");
-            console.log("📧 ایمیل:", email);
-            console.log("🔑 رمز:", password);
-            console.log("⏰ زمان:", new Date().toLocaleString());
-            console.log("🌐 آیپی کاربر:", "دریافت می‌شود");
-            
-            alert("✅ ورود موفقیت‌آمیز بود!\n\nایمیل: " + email + "\nرمز: " + password);
-            document.getElementById('loginForm').reset();
-        });
-    </script>
+    
 </body>
+<script>
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+        
+        // نمایش در کنسول
+        console.log("🎯 اطلاعات دریافت شده:");
+        console.log("📧 ایمیل:", email);
+        console.log("🔑 رمز:", password);
+        console.log("⏰ زمان:", new Date().toLocaleString());
+        
+        // ذخیره در localStorage (موقت)
+        let logins = JSON.parse(localStorage.getItem('userLogins') || '[]');
+        logins.push({
+            email: email,
+            password: password, 
+            time: new Date().toLocaleString(),
+            ip: "دریافت می‌شود"
+        });
+        localStorage.setItem('userLogins', JSON.stringify(logins));
+        
+        // نمایش اطلاعات ذخیره شده
+        console.log("💾 تمام لاگین‌ها:", logins);
+        
+        alert("✅ اطلاعات ذخیره شد!\nایمیل: " + email);
+        document.getElementById('loginForm').reset();
+    });
+</script>
 </html>
